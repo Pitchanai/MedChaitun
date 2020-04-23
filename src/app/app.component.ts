@@ -143,7 +143,7 @@ export class AppComponent {
             },
           },
         },
-      })
+      }) 
     } else {
       this.pieChart.data = data
       this.pieChart.update()
