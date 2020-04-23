@@ -15,6 +15,8 @@ export class AppComponent {
   chartLength = 250
   showChart = false
   pieChart = null
+  getZeroCount = 0
+  getZeroSet = []
   chartData = {
     datasets: [
       {
@@ -75,6 +77,9 @@ export class AppComponent {
     let citizenId = this.textCitizenId
     let scoreTotal = []
 
+    this.getZeroCount = 0
+    this.getZeroSet = []
+
     for (let i = 101; i < 1000; i++) {
       if (i % 10 == 0) continue
       let j = i / 10
@@ -82,6 +87,11 @@ export class AppComponent {
       console.log(j)
       let score = Math.round((citizenId * 10000) / j) % 10000
       scoreTotal.push(score)
+
+      if (score == 0) {
+        this.getZeroCount++
+        this.getZeroSet.push(j)
+      }
     }
 
     const range = this.chartLength
