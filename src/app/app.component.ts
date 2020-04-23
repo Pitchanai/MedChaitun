@@ -69,7 +69,7 @@ export class AppComponent {
 
     for (let i = 111; i < 1000; i++) {
       let j = i / 10
-      if (j.toPrecision(3).includes('0')) continue
+      // if (j.toPrecision(3).includes('0')) continue
       let score = Math.round((citizenId * 10000) / j) % 10000
       scoreTotal.push(score)
     }
