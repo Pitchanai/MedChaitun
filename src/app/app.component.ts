@@ -112,40 +112,41 @@ export class AppComponent {
 
     let canvas = this.pieChartRef.nativeElement
     let ctx = canvas.getContext('2d')
-    this.pieChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labelTotal,
-        datasets: [
-          {
-            label: 'Score Distribution',
-            data: rangeTotal,
-            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-            borderColor: 'gba(54, 162, 235, 1)',
-            // backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
-            // borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
-            borderWidth: 1
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        tooltips: {
-          callbacks: {
-            label: (tooltipItem, data) => {
-              console.log(tooltipItem)
-              console.log(data)
-              let percent = parseFloat(tooltipItem.value) / this.totalCase
-              percent = percent * 100
+    let data = {
+      labels: labelTotal,
+      datasets: [
+        {
+          label: 'Score Distribution',
+          data: rangeTotal,
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          borderColor: 'gba(54, 162, 235, 1)',
+          // backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+          // borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+          borderWidth: 1,
+        },
+      ],
+    }
+    if (!this.pieChart) {
+      this.pieChart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+          responsive: true,
+          tooltips: {
+            callbacks: {
+              label: (tooltipItem, data) => {
+                let percent = parseFloat(tooltipItem.value) / this.totalCase
+                percent = percent * 100
 
-              return `${tooltipItem.value} (${
-                percent.toFixed(2)
-              }%)`
-            }
-          }
-        }
-      }
-    })
-    // this.pieChart.update(this.chartRedrawConfig)
+                return `${tooltipItem.value} (${percent.toFixed(2)}%)`
+              },
+            },
+          },
+        },
+      })
+    } else {
+      this.pieChart.data = data
+      this.pieChart.update()
+    }
   }
 }
