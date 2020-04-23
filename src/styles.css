@@ -4,6 +4,10 @@ body {
   background: #f7fafc;
 }
 
+.btn:focus {
+  outline: none;
+}
+
 @media (prefers-color-scheme: dark) {
   body {
     background: black;

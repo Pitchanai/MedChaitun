@@ -17,7 +17,7 @@
       placeholder="13 หลัก">
     </div>
   </div>
-  <div class="md:flex md:items-center max-w-full justify-center mt-8">
+  <div class="md:flex md:items-center max-w-full justify-center mt-8 overflow-x-auto">
     <div class="md:w-1/3">
       <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
         Range
@@ -66,8 +66,41 @@
         [class.bg-gray-700]="chartLength==1000"
         [class.hover:bg-gray-800]="chartLength==1000"
         [class.text-white]="chartLength==1000"
-        class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
+        class="font-bold py-2 px-4">
           1000
+        </button>
+        <button 
+        (click)="setRange(2000)"
+        [class.bg-gray-300]="chartLength!=2000"
+        [class.hover:bg-gray-400]="chartLength!=2000"
+        [class.text-gray-800]="chartLength!=2000"
+        [class.bg-gray-700]="chartLength==2000"
+        [class.hover:bg-gray-800]="chartLength==2000"
+        [class.text-white]="chartLength==2000"
+        class="ont-bold py-2 px-4">
+          2000
+        </button>
+        <button 
+        (click)="setRange(2500)"
+        [class.bg-gray-300]="chartLength!=2500"
+        [class.hover:bg-gray-400]="chartLength!=2500"
+        [class.text-gray-800]="chartLength!=2500"
+        [class.bg-gray-700]="chartLength==2500"
+        [class.hover:bg-gray-800]="chartLength==2500"
+        [class.text-white]="chartLength==2500"
+        class="ont-bold py-2 px-4">
+          2500
+        </button>
+        <button 
+        (click)="setRange(5000)"
+        [class.bg-gray-300]="chartLength!=5000"
+        [class.hover:bg-gray-400]="chartLength!=5000"
+        [class.text-gray-800]="chartLength!=5000"
+        [class.bg-gray-700]="chartLength==5000"
+        [class.hover:bg-gray-800]="chartLength==5000"
+        [class.text-white]="chartLength==5000"
+        class="font-bold py-2 px-4 rounded-r">
+          5000
         </button>
       </div>
     </div>
@@ -93,11 +126,14 @@
 </div>
 
 <div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md" [class.hide]="!showChart" >
-  จำนวนกรณีที่ได้คะแนนเป็น 0 มีทั้งหมด {{getZeroCount}} กรณี คือ {{getZeroSet.join(', ')}}
+  จำนวนกรณีที่ได้คะแนนเป็น 0 มีทั้งหมด {{getZeroCount}} กรณี {{getZeroCount == 0 ? '' : 'คือ'}} {{getZeroSet.join(', ')}}
+  <br/>
+  <br/>
+  ค่าเฉลี่ยของคะแนน (mean) คือ {{scoreMean}}
 </div>
 
 <div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md mb-8" [class.hide]="!showChart" style="font-size: 14px;">
   <a class="text-red-600">* ข้อมูลทุกอย่างบนเว็บนี้ ไม่มีการส่งไปจัดเก็บในระบบใดๆทั้งสิ้น มีเพียงแค่ Google Analytics สำหรับเก็บสถิติการเข้าเว็บเท่านั้น</a> <br/><br/>
   by Pitchanai Thitipakorn <br/>
-  version 4.0.0
+  version 4.1.0
 </div>

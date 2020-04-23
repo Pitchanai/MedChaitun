@@ -18,6 +18,8 @@ export class AppComponent {
   totalCase = 0
   getZeroCount = 0
   getZeroSet = []
+  scoreSum = 0
+  scoreMean = 0
   chartData = {
     datasets: [
       {
@@ -91,6 +93,10 @@ export class AppComponent {
     this.getZeroCount = 0
     this.getZeroSet = []
     this.totalCase = 0
+    this.scoreSum = 0
+    this.scoreMean = 0
+
+    let scoreSumPv = 0
 
     for (let i = 101; i < 1000; i++) {
       if (i % 10 == 0) continue
@@ -99,12 +105,16 @@ export class AppComponent {
       // if (j.toPrecision(3).includes('0')) continue
       let score = Math.round((citizenId * 10000) / j) % 10000
       scoreTotal.push(score)
+      scoreSumPv += score
 
       if (score == 0) {
         this.getZeroCount++
         this.getZeroSet.push(j)
       }
     }
+
+    this.scoreSum = scoreSumPv
+    this.scoreMean = Math.round(scoreSumPv / this.totalCase)
 
     const range = this.chartLength
     const rangeMax = 10000
@@ -153,6 +163,16 @@ export class AppComponent {
               },
             },
           },
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  suggestedMin: 0,
+                  beginAtZero: true
+                },
+              },
+            ],
+          },
         },
       })
     } else {
@@ -166,6 +186,11 @@ export class AppComponent {
     this.citizenIdLength = 0
     this.chartLength = 250
     this.showChart = false
+    this.getZeroCount = 0
+    this.getZeroSet = []
+    this.totalCase = 0
+    this.scoreSum = 0
+    this.scoreMean = 0
     localStorage.removeItem('citizenId')
   }
 }
