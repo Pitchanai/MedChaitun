@@ -12,6 +12,7 @@ export class AppComponent {
   title = 'app'
   textCitizenId: any = ''
   citizenIdLength = 0
+  chartLength = 250
   showChart = false
   pieChart = null
   chartData = {
@@ -58,6 +59,13 @@ export class AppComponent {
     // return true
   }
 
+  setRange(range: number) {
+    this.chartLength = range
+    if (!this.isDisableCalculate()) {
+      this.submitCalculate()
+    }
+  }
+
   submitCalculate() {
     if (!this.textCitizenId) {
       console.log('validate 1 error')
@@ -76,7 +84,7 @@ export class AppComponent {
       scoreTotal.push(score)
     }
 
-    const range = 250
+    const range = this.chartLength
     const rangeMax = 10000
     let labelTotal = []
     let rangeTotal = []

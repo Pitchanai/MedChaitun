@@ -12,6 +12,61 @@
       class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="number" placeholder="13 หลัก">
     </div>
   </div>
+  <div class="md:flex md:items-center max-w-full justify-center mt-8">
+    <div class="md:w-1/3">
+      <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
+        Range
+      </label>
+    </div>
+    <div class="md:w-2/3">
+      <div class="inline-flex">
+        <button 
+        (click)="setRange(100)"
+        [class.bg-gray-300]="chartLength!=100"
+        [class.hover:bg-gray-400]="chartLength!=100"
+        [class.text-gray-800]="chartLength!=100"
+        [class.bg-gray-700]="chartLength==100"
+        [class.hover:bg-gray-800]="chartLength==100"
+        [class.text-white]="chartLength==100"
+        class="font-bold py-2 px-4 rounded-l">
+          100
+        </button>
+        <button 
+        (click)="setRange(250)"
+        [class.bg-gray-300]="chartLength!=250"
+        [class.hover:bg-gray-400]="chartLength!=250"
+        [class.text-gray-800]="chartLength!=250"
+        [class.bg-gray-700]="chartLength==250"
+        [class.hover:bg-gray-800]="chartLength==250"
+        [class.text-white]="chartLength==250"
+        class="font-bold py-2 px-4">
+          250
+        </button>
+        <button 
+        (click)="setRange(500)"
+        [class.bg-gray-300]="chartLength!=500"
+        [class.hover:bg-gray-400]="chartLength!=500"
+        [class.text-gray-800]="chartLength!=500"
+        [class.bg-gray-700]="chartLength==500"
+        [class.hover:bg-gray-800]="chartLength==500"
+        [class.text-white]="chartLength==500"
+        class="font-bold py-2 px-4">
+          500
+        </button>
+        <button 
+        (click)="setRange(1000)"
+        [class.bg-gray-300]="chartLength!=1000"
+        [class.hover:bg-gray-400]="chartLength!=1000"
+        [class.text-gray-800]="chartLength!=1000"
+        [class.bg-gray-700]="chartLength==1000"
+        [class.hover:bg-gray-800]="chartLength==1000"
+        [class.text-white]="chartLength==1000"
+        class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
+          1000
+        </button>
+      </div>
+    </div>
+  </div>
   <div class="flex max-w-full justify-center mt-8">
     <button 
       [disabled]="isDisableCalculate()" 
@@ -29,5 +84,5 @@
 
 <div class="container mx-auto p-4 mt-8 rounded shadow-md" [class.hide]="!showChart" style="font-size: 14px;">
   by Pitchanai Thitipakorn <br/>
-  version 2.0.0
+  version 3.0.0
 </div>
