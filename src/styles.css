@@ -1,4 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 body {
   font-family: "Prompt";
+  background: #f7fafc;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: black;
+    color: white;
+  }
+
+  .bg-white {
+    background: #141414;
+  }
+
+  .text-red-600 {
+    color: #dc3645;
+  }
 }

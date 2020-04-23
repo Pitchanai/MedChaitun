@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core'
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core'
 import * as Chart from 'chart.js'
 
 @Component({
@@ -33,6 +33,14 @@ export class AppComponent {
     duration: 1000,
     easing: 'easeOutQuart',
     lazy: false,
+  }
+
+  ngOnInit() {
+    let localCitizen = localStorage.getItem('citizenId')
+    if (localCitizen) {
+      this.textCitizenId = localCitizen
+      this.getDigitcount()
+    }
   }
 
   getDigitcount() {
@@ -78,6 +86,8 @@ export class AppComponent {
     let citizenId = this.textCitizenId
     let scoreTotal = []
 
+    localStorage.setItem('citizenId', citizenId)
+
     this.getZeroCount = 0
     this.getZeroSet = []
     this.totalCase = 0
@@ -102,7 +112,7 @@ export class AppComponent {
     let rangeTotal = []
 
     for (let i = 0; i < rangeMax; i = i + range) {
-      labelTotal.push(`[${i},${i+range})`)
+      labelTotal.push(`[${i},${i + range})`)
       rangeTotal.push(scoreTotal.filter((x) => x >= i && x < i + range).length)
     }
 
@@ -144,10 +154,18 @@ export class AppComponent {
             },
           },
         },
-      }) 
+      })
     } else {
       this.pieChart.data = data
       this.pieChart.update()
     }
+  }
+
+  clearValue() {
+    this.textCitizenId = ''
+    this.citizenIdLength = 0
+    this.chartLength = 250
+    this.showChart = false
+    localStorage.removeItem('citizenId')
   }
 }

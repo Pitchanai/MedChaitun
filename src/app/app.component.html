@@ -1,4 +1,4 @@
-<div class="container mx-auto p-4 mt-8 rounded shadow-md">
+<div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md">
   <div class="md:flex md:items-center">
     <div class="md:w-1/3">
       <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
@@ -80,18 +80,24 @@
       class="bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 shadow">
       คำนวน
     </button>
+    <button
+      (click)="clearValue()"
+      class="bg-orange-600 text-white font-bold py-2 px-4 rounded shadow ml-4">
+      ล้างค่า
+    </button>
   </div>
 </div>
 
-<div class="container mx-auto p-4 mt-8 rounded shadow-md display-chart" style="height: 100%;" [class.hide]="!showChart">
+<div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md display-chart" style="height: 100%;" [class.hide]="!showChart">
   <canvas style="height: 100%;" #pieChart></canvas>
 </div>
 
-<div class="container mx-auto p-4 mt-8 rounded shadow-md" [class.hide]="!showChart" >
+<div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md" [class.hide]="!showChart" >
   จำนวนกรณีที่ได้คะแนนเป็น 0 มีทั้งหมด {{getZeroCount}} กรณี คือ {{getZeroSet.join(', ')}}
 </div>
 
-<div class="container mx-auto p-4 mt-8 rounded shadow-md" [class.hide]="!showChart" style="font-size: 14px;">
+<div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md mb-8" [class.hide]="!showChart" style="font-size: 14px;">
+  <a class="text-red-600">* ข้อมูลทุกอย่างบนเว็บนี้ ไม่มีการส่งไปจัดเก็บในระบบใดๆทั้งสิ้น มีเพียงแค่ Google Analytics สำหรับเก็บสถิติการเข้าเว็บเท่านั้น</a> <br/><br/>
   by Pitchanai Thitipakorn <br/>
-  version 3.2.2
+  version 4.0.0
 </div>
