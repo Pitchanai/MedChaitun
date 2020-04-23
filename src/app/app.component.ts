@@ -15,6 +15,7 @@ export class AppComponent {
   chartLength = 250
   showChart = false
   pieChart = null
+  totalCase = 0
   getZeroCount = 0
   getZeroSet = []
   chartData = {
@@ -82,9 +83,9 @@ export class AppComponent {
 
     for (let i = 101; i < 1000; i++) {
       if (i % 10 == 0) continue
+      this.totalCase++
       let j = i / 10
       // if (j.toPrecision(3).includes('0')) continue
-      console.log(j)
       let score = Math.round((citizenId * 10000) / j) % 10000
       scoreTotal.push(score)
 
@@ -127,6 +128,23 @@ export class AppComponent {
           },
         ],
       },
+      options: {
+        responsive: true,
+        tooltips: {
+          callbacks: {
+            label: (tooltipItem, data) => {
+              console.log(tooltipItem)
+              console.log(data)
+              let percent = parseFloat(tooltipItem.value) / this.totalCase
+              percent = percent * 100
+
+              return `${tooltipItem.value} (${
+                percent.toFixed(2)
+              }%)`
+            }
+          }
+        }
+      }
     })
     // this.pieChart.update(this.chartRedrawConfig)
   }
