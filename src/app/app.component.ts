@@ -80,6 +80,7 @@ export class AppComponent {
 
     this.getZeroCount = 0
     this.getZeroSet = []
+    this.totalCase = 0
 
     for (let i = 101; i < 1000; i++) {
       if (i % 10 == 0) continue
