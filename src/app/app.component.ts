@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core'
+import { Component, ViewChild, ElementRef } from '@angular/core'
 import * as Chart from 'chart.js'
 
 const CITIZEN_ID_MAX_LENGTH = 13
@@ -11,7 +11,6 @@ const CITIZEN_ID_MAX_LENGTH = 13
 export class AppComponent {
   @ViewChild('pieChart') pieChartRef: ElementRef
 
-  title = 'app'
   textCitizenId: any = ''
   get citizenIdLength(): number {
     let idLength = 0
@@ -69,7 +68,6 @@ export class AppComponent {
 
   isDisableCalculate(): boolean {
     return !(this.citizenIdLength == CITIZEN_ID_MAX_LENGTH)
-    // return true
   }
 
   setRange(range: number): void {
