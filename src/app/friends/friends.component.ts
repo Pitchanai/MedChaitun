@@ -47,6 +47,17 @@ export class FriendsComponent implements OnInit {
     }
   }
 
+  clearValue() {
+    this.friendsCitizenId = [{ value: null }]
+    this.citizenIdLength = 0
+    this.textCitizenId = ''
+    this.chartLength = 2000
+    this.showChart = false
+    this.pieChart = null
+    this.totalCase = 0
+    localStorage.removeItem('citizenId')
+  }
+
   getDigitcount() {
     let idLength = 0
     if (!this.textCitizenId) {
