@@ -45,7 +45,7 @@ export class AppComponent {
     }
   }
 
-  getDigitcount() {
+  getDigitcount(): string {
     let idLength = 0
     if (!this.textCitizenId) {
       return ''
@@ -67,19 +67,19 @@ export class AppComponent {
     return `(ขาด ${13 - this.citizenIdLength} หลัก)`
   }
 
-  isDisableCalculate() {
+  isDisableCalculate(): boolean {
     return !(this.citizenIdLength == 13)
     // return true
   }
 
-  setRange(range: number) {
+  setRange(range: number): void {
     this.chartLength = range
     if (!this.isDisableCalculate()) {
       this.submitCalculate()
     }
   }
 
-  submitCalculate() {
+  submitCalculate(): void {
     if (!this.textCitizenId) {
       console.log('validate 1 error')
       return
@@ -181,7 +181,7 @@ export class AppComponent {
     }
   }
 
-  clearValue() {
+  clearValue(): void {
     this.textCitizenId = ''
     this.citizenIdLength = 0
     this.chartLength = 250
