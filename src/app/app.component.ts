@@ -25,7 +25,6 @@ export class AppComponent {
   showChart = false
   pieChart = null
   totalCase = 0
-  getZeroCount = 0
   getZeroSet = []
   scoreSum = 0
   scoreMean = 0
@@ -105,7 +104,6 @@ export class AppComponent {
       scoreSumPv += score
 
       if (score == 0) {
-        this.getZeroCount++
         this.getZeroSet.push(i)
       }
     }
@@ -189,7 +187,6 @@ export class AppComponent {
   }
 
   clearChartValue(): void {
-    this.getZeroCount = 0
     this.getZeroSet = []
     this.totalCase = 0
     this.scoreSum = 0

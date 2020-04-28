@@ -128,7 +128,7 @@
 </div>
 
 <div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md" [class.hide]="!showChart" >
-  จำนวนกรณีที่ได้คะแนนเป็น 0 มีทั้งหมด {{getZeroCount}} กรณี {{getZeroCount == 0 ? '' : 'คือ'}} {{getZeroSet.join(', ')}}
+  จำนวนกรณีที่ได้คะแนนเป็น 0 มีทั้งหมด {{getZeroSet.length}} กรณี {{getZeroSet.length == 0 ? '' : 'คือ'}} {{getZeroSet.join(', ')}}
   <br/>
   <br/>
   ค่าเฉลี่ยของคะแนน (mean) คือ {{scoreMean}}
