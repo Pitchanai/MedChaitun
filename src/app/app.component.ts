@@ -1,5 +1,7 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core'
+import { Component, ViewChild, ElementRef } from '@angular/core'
 import * as Chart from 'chart.js'
+
+const CITIZEN_ID_MAX_LENGTH = 13
 
 @Component({
   selector: 'app-root',
@@ -9,14 +11,19 @@ import * as Chart from 'chart.js'
 export class AppComponent {
   @ViewChild('pieChart') pieChartRef: ElementRef
 
-  title = 'app'
   textCitizenId: any = ''
-  citizenIdLength = 0
+  get citizenIdLength(): number {
+    let idLength = 0
+    let textCitizenIdString = '' + this.textCitizenId
+    if (textCitizenIdString) {
+      idLength = textCitizenIdString.length
+    }
+    return idLength
+  }
   chartLength = 250
   showChart = false
   pieChart = null
   totalCase = 0
-  getZeroCount = 0
   getZeroSet = []
   scoreSum = 0
   scoreMean = 0
@@ -45,41 +52,32 @@ export class AppComponent {
     }
   }
 
-  getDigitcount() {
-    let idLength = 0
+  getDigitcount(): string {
     if (!this.textCitizenId) {
       return ''
     }
 
-    let textCitizenIdString = this.textCitizenId.toString()
-    if (textCitizenIdString) {
-      idLength = textCitizenIdString.length
-    }
-
-    this.citizenIdLength = idLength
-
-    if (this.citizenIdLength > 13) {
+    if (this.citizenIdLength > CITIZEN_ID_MAX_LENGTH) {
       return '(เกิน)'
-    } else if (this.citizenIdLength == 13) {
+    } else if (this.citizenIdLength == CITIZEN_ID_MAX_LENGTH) {
       return '(ครบ)'
     }
 
-    return `(ขาด ${13 - this.citizenIdLength} หลัก)`
+    return `(ขาด ${CITIZEN_ID_MAX_LENGTH - this.citizenIdLength} หลัก)`
   }
 
-  isDisableCalculate() {
-    return !(this.citizenIdLength == 13)
-    // return true
+  isDisableCalculate(): boolean {
+    return !(this.citizenIdLength == CITIZEN_ID_MAX_LENGTH)
   }
 
-  setRange(range: number) {
+  setRange(range: number): void {
     this.chartLength = range
     if (!this.isDisableCalculate()) {
       this.submitCalculate()
     }
   }
 
-  submitCalculate() {
+  submitCalculate(): void {
     if (!this.textCitizenId) {
       console.log('validate 1 error')
       return
@@ -91,11 +89,7 @@ export class AppComponent {
 
     localStorage.setItem('citizenId', citizenId)
 
-    this.getZeroCount = 0
-    this.getZeroSet = []
-    this.totalCase = 0
-    this.scoreSum = 0
-    this.scoreMean = 0
+    this.clearChartValue();
 
     let scoreSumPv = 0
 
@@ -108,7 +102,6 @@ export class AppComponent {
       scoreSumPv += score
 
       if (score == 0) {
-        this.getZeroCount++
         this.getZeroSet.push(i)
       }
     }
@@ -116,21 +109,16 @@ export class AppComponent {
     this.scoreSum = scoreSumPv
     this.scoreMean = Math.round(scoreSumPv / this.totalCase)
 
-    const range = this.chartLength
-    const rangeMax = 10000
-    let labelTotal = []
-    let rangeTotal = []
-
-    for (let i = 0; i < rangeMax; i = i + range) {
-      labelTotal.push(`[${i},${i + range})`)
-      rangeTotal.push(scoreTotal.filter((x) => x >= i && x < i + range).length)
-    }
+    let { labelTotal, rangeTotal } = this.getLabelTotalAndRangeTotal(scoreTotal)
 
     console.log(labelTotal)
     console.log(rangeTotal)
 
     this.showChart = true
+    this.setChartData(labelTotal, rangeTotal)
+  }
 
+  private setChartData(labelTotal: any[], rangeTotal: any[]) {
     let canvas = this.pieChartRef.nativeElement
     let ctx = canvas.getContext('2d')
     let data = {
@@ -155,10 +143,9 @@ export class AppComponent {
           responsive: true,
           tooltips: {
             callbacks: {
-              label: (tooltipItem, data) => {
+              label: (tooltipItem) => {
                 let percent = parseFloat(tooltipItem.value) / this.totalCase
                 percent = percent * 100
-
                 return `${tooltipItem.value} (${percent.toFixed(2)}%)`
               },
             },
@@ -175,22 +162,39 @@ export class AppComponent {
           },
         },
       })
-    } else {
+    }
+    else {
       this.pieChart.data = data
       this.pieChart.update()
     }
   }
 
-  clearValue() {
+  private getLabelTotalAndRangeTotal(scoreTotal: any[]) {
+    const range = this.chartLength
+    const rangeMax = 10000
+    let labelTotal = []
+    let rangeTotal = []
+    for (let i = 0; i < rangeMax; i = i + range) {
+      labelTotal.push(`[${i},${i + range})`)
+      rangeTotal.push(scoreTotal.filter((x) => x >= i && x < i + range).length)
+    }
+    return { labelTotal, rangeTotal }
+  }
+
+  clearValue(): void {
     this.textCitizenId = ''
-    this.citizenIdLength = 0
     this.chartLength = 250
     this.showChart = false
-    this.getZeroCount = 0
+
+    this.clearChartValue();
+
+    localStorage.removeItem('citizenId')
+  }
+
+  clearChartValue(): void {
     this.getZeroSet = []
     this.totalCase = 0
     this.scoreSum = 0
     this.scoreMean = 0
-    localStorage.removeItem('citizenId')
   }
 }
