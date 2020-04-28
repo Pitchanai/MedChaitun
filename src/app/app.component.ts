@@ -1,6 +1,8 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core'
 import * as Chart from 'chart.js'
 
+const CITIZEN_ID_MAX_LENGTH = 13
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -46,11 +48,11 @@ export class AppComponent {
   }
 
   getDigitcount(): string {
-    let idLength = 0
     if (!this.textCitizenId) {
       return ''
     }
 
+    let idLength = 0
     let textCitizenIdString = this.textCitizenId.toString()
     if (textCitizenIdString) {
       idLength = textCitizenIdString.length
@@ -58,17 +60,17 @@ export class AppComponent {
 
     this.citizenIdLength = idLength
 
-    if (this.citizenIdLength > 13) {
+    if (this.citizenIdLength > CITIZEN_ID_MAX_LENGTH) {
       return '(เกิน)'
-    } else if (this.citizenIdLength == 13) {
+    } else if (this.citizenIdLength == CITIZEN_ID_MAX_LENGTH) {
       return '(ครบ)'
     }
 
-    return `(ขาด ${13 - this.citizenIdLength} หลัก)`
+    return `(ขาด ${CITIZEN_ID_MAX_LENGTH - this.citizenIdLength} หลัก)`
   }
 
   isDisableCalculate(): boolean {
-    return !(this.citizenIdLength == 13)
+    return !(this.citizenIdLength == CITIZEN_ID_MAX_LENGTH)
     // return true
   }
 
