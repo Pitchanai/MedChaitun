@@ -13,7 +13,14 @@ export class AppComponent {
 
   title = 'app'
   textCitizenId: any = ''
-  citizenIdLength = 0
+  get citizenIdLength(): number {
+    let idLength = 0
+    let textCitizenIdString = '' + this.textCitizenId
+    if (textCitizenIdString) {
+      idLength = textCitizenIdString.length
+    }
+    return idLength
+  }
   chartLength = 250
   showChart = false
   pieChart = null
@@ -51,14 +58,6 @@ export class AppComponent {
     if (!this.textCitizenId) {
       return ''
     }
-
-    let idLength = 0
-    let textCitizenIdString = this.textCitizenId.toString()
-    if (textCitizenIdString) {
-      idLength = textCitizenIdString.length
-    }
-
-    this.citizenIdLength = idLength
 
     if (this.citizenIdLength > CITIZEN_ID_MAX_LENGTH) {
       return '(เกิน)'
@@ -185,7 +184,6 @@ export class AppComponent {
 
   clearValue(): void {
     this.textCitizenId = ''
-    this.citizenIdLength = 0
     this.chartLength = 250
     this.showChart = false
     this.getZeroCount = 0
