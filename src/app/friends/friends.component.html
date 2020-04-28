@@ -1,7 +1,6 @@
-<!-- <div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md">
-  <div class="w-full text-center">อัพเดทการคำนวนล่าสุด 28/04/63</div>
-  <div class="w-full text-center mb-4 font-thin text-xs">by Pitchanai Thitipakorn</div>
-  <div class="md:flex md:items-center">
+<div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md">
+  <a class="bg-orange-600 text-white py-2 px-4 mb-4 rounded" href="/">< กลับหน้าหลัก</a>
+  <div class="md:flex md:items-center mt-4">
     <div class="md:w-1/3">
       <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
         เลขบัตรประจำตัวประชาชน {{ getDigitcount() }}
@@ -123,20 +122,42 @@
   </div>
 </div>
 
-<div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md display-chart" style="height: 100%;" [class.hide]="!showChart">
+<div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md">
+  <div class="flex max-w-full justify-center mb-4">
+    <button 
+      (click)="addFriends()"
+      class="bg-green-600 text-white font-bold py-2 px-4 rounded shadow">
+      + เพิ่มเพื่อน
+    </button>
+    <!-- <button
+      (click)="clearValue()"
+      class="bg-orange-600 text-white font-bold py-2 px-4 rounded shadow ml-4">
+      ล้างค่า
+    </button> -->
+  </div>
+  <div class="text-red-600 text-center w-full">* ข้อมูลเลขบัตรประจำตัวประชาชนของเพื่อน จะไม่มีการบันทึกลงเครื่องนี้เด็ดขาด ต้องพิมพ์ใหม่ทุกครั้งที่เข้าเว็บไซด์</div>
+  <div class="md:flex md:items-center mb-4 mt-8 lg:mt-4" *ngFor="let friend of friendsCitizenId; let i = index">
+    <div class="md:w-1/3 flex lg:justify-end justify-center mb-2 lg:mb-0">
+      <button class="mr-4 bg-red-600 text-white font-bold py-1 px-2 rounded" (click)="deleteFriend(i)">Delete</button>
+      <label class="flex items-center text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
+        เพื่อนคนที่ {{ i + 1 }} {{getDigitFriendCount(i)}}
+      </label>
+    </div>
+    <div class="md:w-2/3">
+      <input 
+      maxlength="13"
+      [(ngModel)]="friend.value"
+      class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" 
+      id="inline-full-name" 
+      type="number"
+      pattern="[0-9]*"
+      inputmode="numeric"
+      name="friendNo{{i}}"
+      placeholder="13 หลัก">
+    </div>
+  </div>
+</div>
+
+<div class="container bg-white mx-auto p-4 mt-8 mb-8 rounded shadow-md display-chart" style="height: 100%;" [class.hide]="!showChart">
   <canvas style="height: 100%;" #pieChart></canvas>
 </div>
-
-<div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md" [class.hide]="!showChart" >
-  จำนวนกรณีที่ได้คะแนนเป็น 0 มีทั้งหมด {{getZeroCount}} กรณี {{getZeroCount == 0 ? '' : 'คือ'}} {{getZeroSet.join(', ')}}
-  <br/>
-  <br/>
-  ค่าเฉลี่ยของคะแนน (mean) คือ {{scoreMean}}
-</div>
-
-<div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md mb-8" [class.hide]="!showChart" style="font-size: 14px;">
-  <a class="text-red-600">* ข้อมูลทุกอย่างบนเว็บนี้ ไม่มีการส่งไปจัดเก็บในระบบใดๆทั้งสิ้น มีเพียงแค่ Google Analytics สำหรับเก็บสถิติการเข้าเว็บเท่านั้น</a> <br/><br/>
-  by Pitchanai Thitipakorn <br/>
-  version 5.0.0
-</div> -->
-<router-outlet></router-outlet>
