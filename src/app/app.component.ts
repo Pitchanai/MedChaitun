@@ -111,21 +111,16 @@ export class AppComponent {
     this.scoreSum = scoreSumPv
     this.scoreMean = Math.round(scoreSumPv / this.totalCase)
 
-    const range = this.chartLength
-    const rangeMax = 10000
-    let labelTotal = []
-    let rangeTotal = []
-
-    for (let i = 0; i < rangeMax; i = i + range) {
-      labelTotal.push(`[${i},${i + range})`)
-      rangeTotal.push(scoreTotal.filter((x) => x >= i && x < i + range).length)
-    }
+    let { labelTotal, rangeTotal } = this.getLabelTotalAndRangeTotal(scoreTotal)
 
     console.log(labelTotal)
     console.log(rangeTotal)
 
     this.showChart = true
+    this.setChartData(labelTotal, rangeTotal)
+  }
 
+  private setChartData(labelTotal: any[], rangeTotal: any[]) {
     let canvas = this.pieChartRef.nativeElement
     let ctx = canvas.getContext('2d')
     let data = {
@@ -150,10 +145,9 @@ export class AppComponent {
           responsive: true,
           tooltips: {
             callbacks: {
-              label: (tooltipItem, data) => {
+              label: (tooltipItem) => {
                 let percent = parseFloat(tooltipItem.value) / this.totalCase
                 percent = percent * 100
-
                 return `${tooltipItem.value} (${percent.toFixed(2)}%)`
               },
             },
@@ -170,10 +164,23 @@ export class AppComponent {
           },
         },
       })
-    } else {
+    }
+    else {
       this.pieChart.data = data
       this.pieChart.update()
     }
+  }
+
+  private getLabelTotalAndRangeTotal(scoreTotal: any[]) {
+    const range = this.chartLength
+    const rangeMax = 10000
+    let labelTotal = []
+    let rangeTotal = []
+    for (let i = 0; i < rangeMax; i = i + range) {
+      labelTotal.push(`[${i},${i + range})`)
+      rangeTotal.push(scoreTotal.filter((x) => x >= i && x < i + range).length)
+    }
+    return { labelTotal, rangeTotal }
   }
 
   clearValue(): void {
