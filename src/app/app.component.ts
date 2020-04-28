@@ -92,11 +92,7 @@ export class AppComponent {
 
     localStorage.setItem('citizenId', citizenId)
 
-    this.getZeroCount = 0
-    this.getZeroSet = []
-    this.totalCase = 0
-    this.scoreSum = 0
-    this.scoreMean = 0
+    this.clearChartValue();
 
     let scoreSumPv = 0
 
@@ -186,11 +182,17 @@ export class AppComponent {
     this.textCitizenId = ''
     this.chartLength = 250
     this.showChart = false
+
+    this.clearChartValue();
+
+    localStorage.removeItem('citizenId')
+  }
+
+  clearChartValue(): void {
     this.getZeroCount = 0
     this.getZeroSet = []
     this.totalCase = 0
     this.scoreSum = 0
     this.scoreMean = 0
-    localStorage.removeItem('citizenId')
   }
 }
