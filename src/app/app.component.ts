@@ -179,7 +179,13 @@ export class AppComponent {
   private getCitizenCal(citizenCal: number) {
     let allCase = []
     let citizenCalString = citizenCal.toString()
-    console.log(citizenCalString)
+    if (citizenCalString.length < 6) {
+      let addString = ''
+      for (let i = 0; i < 6 - citizenCalString.length; i++) {
+        addString += '0'
+      }
+      citizenCalString = addString + citizenCalString
+    }
     let position = [0, 1, 2, 3, 4, 5]
     for (let a = 0; a < 6; a++) {
       let cal = citizenCalString[position[a]]
