@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core'
 import * as Chart from 'chart.js'
 
 const CITIZEN_ID_MAX_LENGTH = 13
+const MULTIPLY_MAX_LENGTH = 4
 
 @Component({
   selector: 'app-root',
@@ -23,11 +24,26 @@ export class AppComponent {
   chartLength = 250
   showChart = false
   loading = false
+  showLiveScore = false
   pieChart = null
   totalCase = 0
   getZeroSet = []
   scoreSum = 0
   scoreMean = 0
+  digitLabel = ['หลักหน่วย', 'หลักสิบ', 'หลักร้อย', 'หลักพัน']
+  digitRange = [8, 9, 10, 11, 12, 13]
+  selectedDigit = [0, 0, 0, 0]
+  livescore = null
+  randomCitizenVal = null
+  multiplyValue = null
+  get multiplyValueLength(): number {
+    let multiplyLength = 0
+    let multiplyString = '' + this.multiplyValue
+    if (multiplyString) {
+      multiplyLength = multiplyString.length
+    }
+    return multiplyLength
+  }
   chartData = {
     datasets: [
       {
@@ -51,6 +67,17 @@ export class AppComponent {
       this.textCitizenId = localCitizen
       this.getDigitcount()
     }
+    for (let i = 0; i < this.selectedDigit.length; i++) {
+      let value = localStorage.getItem(`digit_${i}`)
+      if (value) {
+        this.selectedDigit[i] = parseInt(value)
+      }
+    }
+    let localMultiplyValue = localStorage.getItem('multiplyValue')
+    if (localMultiplyValue) {
+      this.multiplyValue = localMultiplyValue
+      this.getDigitCountMultiplyLive()
+    }
   }
 
   getDigitcount(): string {
@@ -67,8 +94,30 @@ export class AppComponent {
     return `(ขาด ${CITIZEN_ID_MAX_LENGTH - this.citizenIdLength} หลัก)`
   }
 
+  getDigitCountMultiplyLive(): string {
+    if (!this.multiplyValue) {
+      return ''
+    }
+
+    if (this.multiplyValueLength > MULTIPLY_MAX_LENGTH) {
+      return '(เกิน)'
+    } else if (this.multiplyValueLength == MULTIPLY_MAX_LENGTH) {
+      return '(ครบ)'
+    }
+
+    return `(ขาด ${MULTIPLY_MAX_LENGTH - this.multiplyValueLength} หลัก)`
+  }
+
   isDisableCalculate(): boolean {
     return !(this.citizenIdLength == CITIZEN_ID_MAX_LENGTH)
+  }
+
+  isDisableCalculateLive(): boolean {
+    if (this.isDisableCalculate()) return true
+    if (this.selectedDigit.includes(0)) return true
+    if (!this.multiplyValue) return true
+    if (this.multiplyValue.toString().length != 4) return true
+    return false
   }
 
   setRange(range: number): void {
@@ -78,12 +127,37 @@ export class AppComponent {
     }
   }
 
+  setDigitValue(labelIndex: number, digitValue: number): void {
+    this.selectedDigit[labelIndex] = digitValue
+    localStorage.setItem(`digit_${labelIndex}`, digitValue.toString())
+  }
+
+  submitCalculateLive(): void {
+    if (this.isDisableCalculateLive()) return
+
+    localStorage.setItem('multiplyValue', this.multiplyValue)
+
+    let citizenString = this.textCitizenId.toString()
+    let randomCitizen = ''
+    for (let i = 0; i < this.selectedDigit.length; i++) {
+      randomCitizen = citizenString[this.selectedDigit[i]-1] + randomCitizen
+    }
+
+    let randomCitizenValue = parseInt(randomCitizen)
+    this.randomCitizenVal = randomCitizenValue
+    let score = (randomCitizenValue * this.multiplyValue) % 10000
+    this.livescore = score
+    this.showLiveScore = true
+  }
+
   submitCalculate(): void {
     if (!this.textCitizenId) {
       console.log('validate 1 error')
       return
     }
 
+    if (!this.isDisableCalculateLive()) this.submitCalculateLive() 
+    
     this.loading = true
 
     let citizenId = this.textCitizenId
@@ -99,7 +173,6 @@ export class AppComponent {
     let scoreSumPv = 0
 
     for (let i = 1000; i < 10000; i++) {
-      
       for (let j = 0; j < allCitizenCal.length; j++) {
         this.totalCase++
         let score = (allCitizenCal[j] * i) % 10000
@@ -162,15 +235,14 @@ export class AppComponent {
               {
                 ticks: {
                   suggestedMin: 0,
-                  beginAtZero: true
+                  beginAtZero: true,
                 },
               },
             ],
           },
         },
       })
-    }
-    else {
+    } else {
       this.pieChart.data = data
       this.pieChart.update()
     }
@@ -178,14 +250,7 @@ export class AppComponent {
 
   private getCitizenCal(citizenCal: number) {
     let allCase = []
-    let citizenCalString = citizenCal.toString()
-    if (citizenCalString.length < 6) {
-      let addString = ''
-      for (let i = 0; i < 6 - citizenCalString.length; i++) {
-        addString += '0'
-      }
-      citizenCalString = addString + citizenCalString
-    }
+    let citizenCalString = citizenCal.toString().padStart(6, "0")
     let position = [0, 1, 2, 3, 4, 5]
     for (let a = 0; a < 6; a++) {
       let cal = citizenCalString[position[a]]
@@ -228,7 +293,7 @@ export class AppComponent {
     this.showChart = false
     this.loading = false
 
-    this.clearChartValue();
+    this.clearChartValue()
 
     localStorage.removeItem('citizenId')
   }
@@ -238,5 +303,16 @@ export class AppComponent {
     this.totalCase = 0
     this.scoreSum = 0
     this.scoreMean = 0
+  }
+
+  clearValueLive(): void {
+    this.selectedDigit = [0, 0, 0, 0]
+    this.showLiveScore = false
+    this.livescore = null
+    this.multiplyValue = null
+    localStorage.removeItem('multiplyValue')
+    for (let i = 0; i < this.selectedDigit.length; i++) {
+      localStorage.removeItem(`digit_${i}`)
+    }
   }
 }
