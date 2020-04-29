@@ -22,6 +22,7 @@ export class AppComponent {
   }
   chartLength = 250
   showChart = false
+  loading = false
   pieChart = null
   totalCase = 0
   getZeroSet = []
@@ -83,26 +84,31 @@ export class AppComponent {
       return
     }
 
+    this.loading = true
+
     let citizenId = this.textCitizenId
-    let citizenCal = citizenId % 10000
+    let citizenCal = citizenId % 1000000
     let scoreTotal = []
+
+    let allCitizenCal = this.getCitizenCal(citizenCal)
 
     localStorage.setItem('citizenId', citizenId)
 
-    this.clearChartValue();
+    this.clearChartValue()
 
     let scoreSumPv = 0
 
     for (let i = 1000; i < 10000; i++) {
-      // if (i % 10 == 0) continue
-      this.totalCase++
-      // let score = Math.round((citizenId * 10000) / j) % 10000
-      let score = (citizenCal * i) % 10000
-      scoreTotal.push(score)
-      scoreSumPv += score
+      
+      for (let j = 0; j < allCitizenCal.length; j++) {
+        this.totalCase++
+        let score = (allCitizenCal[j] * i) % 10000
+        scoreTotal.push(score)
+        scoreSumPv += score
 
-      if (score == 0) {
-        this.getZeroSet.push(i)
+        if (score == 0) {
+          this.getZeroSet.push(i)
+        }
       }
     }
 
@@ -116,6 +122,7 @@ export class AppComponent {
 
     this.showChart = true
     this.setChartData(labelTotal, rangeTotal)
+    this.loading = false
   }
 
   private setChartData(labelTotal: any[], rangeTotal: any[]) {
@@ -169,6 +176,34 @@ export class AppComponent {
     }
   }
 
+  private getCitizenCal(citizenCal: number) {
+    let allCase = []
+    let citizenCalString = citizenCal.toString()
+    console.log(citizenCalString)
+    let position = [0, 1, 2, 3, 4, 5]
+    for (let a = 0; a < 6; a++) {
+      let cal = citizenCalString[position[a]]
+      let positionForB = [...position]
+      positionForB.splice(a, 1)
+      for (let b = 0; b < 5; b++) {
+        let calB = citizenCalString[positionForB[b]] + cal
+        let positionForC = [...positionForB]
+        positionForC.splice(b, 1)
+        for (let c = 0; c < 4; c++) {
+          let calC = citizenCalString[positionForC[c]] + calB
+          let positionForD = [...positionForC]
+          positionForD.splice(c, 1)
+          for (let d = 0; d < 3; d++) {
+            let calD = citizenCalString[positionForD[d]] + calC
+            allCase.push(parseInt(calD))
+          }
+        }
+      }
+    }
+    console.log(allCase)
+    return allCase
+  }
+
   private getLabelTotalAndRangeTotal(scoreTotal: any[]) {
     const range = this.chartLength
     const rangeMax = 10000
@@ -185,6 +220,7 @@ export class AppComponent {
     this.textCitizenId = ''
     this.chartLength = 250
     this.showChart = false
+    this.loading = false
 
     this.clearChartValue();
 
