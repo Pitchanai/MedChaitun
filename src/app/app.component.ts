@@ -130,6 +130,7 @@ export class AppComponent {
   setDigitValue(labelIndex: number, digitValue: number): void {
     this.selectedDigit[labelIndex] = digitValue
     localStorage.setItem(`digit_${labelIndex}`, digitValue.toString())
+    this.submitCalculateLive()
   }
 
   submitCalculateLive(): void {
