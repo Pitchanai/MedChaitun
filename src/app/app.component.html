@@ -163,6 +163,7 @@
       <input 
       maxlength="13"
       [(ngModel)]="multiplyValue"
+      (keyup)="submitCalculateLive()"
       class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" 
       id="inline-full-name" 
       type="number"
@@ -187,7 +188,7 @@
   </div>
 </div>
 
-<div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md mb-8 text-center text-xl" *ngIf="showLiveScore">
+<div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md mb-8 text-center text-xl" *ngIf="showLiveScore && !isDisableCalculateLive()">
   ค่าเรียงใหม่จากบัตรประชาชน <u>{{randomCitizenVal.toString().padStart(4, "0")}}</u> <br>
   ผลจากการคูณ <u>{{randomCitizenVal * multiplyValue | number}}</u> <br>
   คะแนนของคุณคือ <u>{{livescore | number}}</u>
@@ -214,5 +215,5 @@
 <div class="container bg-white mx-auto p-4 mt-8 rounded shadow-md mb-8" [class.hide]="!showChart" style="font-size: 14px;">
   <a class="text-red-600">* ข้อมูลทุกอย่างบนเว็บนี้ ไม่มีการส่งไปจัดเก็บในระบบใดๆทั้งสิ้น มีเพียงแค่ Google Analytics สำหรับเก็บสถิติการเข้าเว็บเท่านั้น</a> <br/><br/>
   by Pitchanai Thitipakorn <br/>
-  version 8.0.0
+  version 8.1.0
 </div>
